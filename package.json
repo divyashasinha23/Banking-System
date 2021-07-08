@@ -1,11 +1,28 @@
 {
   "name": "mini-banking-system",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node backend/server",
+    "server": "nodemon backend/server",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "concurrently": "^6.2.0",
+    "dotenv": "^10.0.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/divyashasinha23/Banking-System.git"
+  },
+  "bugs": {
+    "url": "https://github.com/divyashasinha23/Banking-System/issues"
+  },
+  "homepage": "https://github.com/divyashasinha23/Banking-System#readme",
   "description": ""
 }

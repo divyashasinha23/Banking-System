@@ -1,10 +1,10 @@
   
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
-const Customer = require('../Models/Customer');
+const Admin = require('../Models/Admin');
 
 // json web token is verified
-const Auth = asyncHandler(async (req, res, next) => {
+const AdminAuth = asyncHandler(async (req, res, next) => {
   let token;
   if (
     req.headers.authorization &&
@@ -12,8 +12,8 @@ const Auth = asyncHandler(async (req, res, next) => {
   )
     try {
       token = req.headers.authorization.split(' ')[1].toString();
-      const decodedToken = jwt.verify(token, "customersecretkey");
-      req.customer = await Customer.findById(decodedToken.id).select('-password');
+      const decodedToken = jwt.verify(token, "adminsecretkey");
+      req.admin = await Admin.findById(decodedToken.id).select('-password');
       next();
     } catch (error) {
       console.error(error);
@@ -26,4 +26,4 @@ const Auth = asyncHandler(async (req, res, next) => {
   }
 });
 
-module.exports = Auth;
+module.exports = AdminAuth;

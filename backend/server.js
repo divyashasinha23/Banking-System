@@ -5,6 +5,7 @@ const colors = require('colors');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const CustomerRoute = require('./Routes/cutomerRoute');
+const AdminRoute = require('./Routes/adminRoute');
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/app', CustomerRoute);
+app.use('/app', AdminRoute);
 
 
 

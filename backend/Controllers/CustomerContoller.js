@@ -3,7 +3,7 @@ const Customer = require("../Models/Customer");
 const jwt = require('jsonwebtoken');
 
 const createToken = (id) => {
-    return jwt.sign({id}, process.env.CUSTOMER ,{
+    return jwt.sign({id}, "customersecretkey" ,{
     expiresIn: '30d'
   });
   }
@@ -51,6 +51,7 @@ module.exports.customer_login = async(req,res) => {
             res.status(200);
             res.json({
                 _id: customer._id,
+                FullName: customer.FullName,
                 email: customer.email,
                 password: customer.password,
                 token:token
