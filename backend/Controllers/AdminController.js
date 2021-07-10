@@ -57,7 +57,6 @@ module.exports.all_user = async(req,res) => {
     if(users.length !== 0){
       res.status(200).json({
        users,
-        count: users.length
       });
     }
     else{
@@ -74,3 +73,29 @@ module.exports.all_user = async(req,res) => {
   }
   }
 
+module.exports.bank_details = async(req,res) => {
+ 
+  try{
+    let totalSum = 0;
+    const users = await Customer.find();
+    for(let index =0 ; index< users.length; index++){
+      totalSum = totalSum + users[index].TotalBalance
+    }
+     TotalCustomer = users.length;
+     TotalAmount = totalSum;
+
+    //  Admin.create({T})
+
+    // console.log(totalSum);
+    if(users.length != 0){
+      res.status(201).json({
+        TotalCustomer: users.length,
+        TotalAmount: totalSum
+      });
+    }
+  }
+  catch(err){
+    console.log(err);
+  }
+
+}

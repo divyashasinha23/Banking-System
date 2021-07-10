@@ -10,6 +10,7 @@ router.post('/customer-login', CustomerController.customer_login);
 
 //Transactions
 router.post('/tranfer-amount', Auth, CustomerTransfer.transfer_amount);
+router.get('/user-dummy', CustomerTransfer.get_dummy_details)
 router.get('/transaction-details',Auth, CustomerTransfer.get_details);
 
 //Display

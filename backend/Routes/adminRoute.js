@@ -12,6 +12,7 @@ router.post('/add-new-user',AdminAuth, AddUser.add_user);
 
 //View User
 router.get('/All-Users', AdminAuth, AdminController.all_user);
+router.get('/bank-details', AdminAuth, AdminController.bank_details);
 
 // //credit Amount
 // router.post('/Credit', AdminController.credit_amount);

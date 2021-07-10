@@ -19,6 +19,9 @@ const TransactionSchema = new mongoose.Schema({
      },
      ReceiverAccountNumber:{
          type:String
+     },
+     AccountNumber:{
+         type:String
      }
     
 

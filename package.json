@@ -11,9 +11,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "Promise": "^1.0.5",
+    "axios": "^0.21.1",
     "bcrypt": "^5.0.1",
     "concurrently": "^6.2.0",
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "joi-browser": "^13.4.0",
+    "material-table": "^1.69.3",
+    "raven-js": "^3.27.2",
+    "react-toastify": "^7.0.4"
   },
   "devDependencies": {},
   "repository": {

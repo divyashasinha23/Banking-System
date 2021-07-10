@@ -43,9 +43,9 @@ customerSchema.statics.login = async function(email, password){
   if(auth){
       return customer;
   }
-  throw new Error('incorrect password');
     }
-    throw new Error('invalid email');
+    
+    throw Error('Invalid Details');
 }
 
 

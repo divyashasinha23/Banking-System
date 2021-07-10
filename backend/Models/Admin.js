@@ -9,6 +9,12 @@ const adminSchema = new mongoose.Schema({
     },
     password: {
         type: String
+    },
+    TotalAmount:{
+       type: String
+    },
+    TotalCustomer:{
+        type: String
     }
 });
 

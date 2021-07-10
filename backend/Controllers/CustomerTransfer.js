@@ -10,30 +10,31 @@ mongoose.set('useUnifiedTopology', true);
 
 module.exports.transfer_amount = async(req,res) => {
    
-     var{AmountDebit, ReceiverAccountNumber, CustomerAcc} = req.body;
+     var{AmountDebit, AccountNumber, CustomerAcc} = req.body;
      var remaining;
      var increase;
      var SenderAccountNumber
-     var AccountNumber
+    //  var AccountNumber
      var AmountCredit;
+     var CustomerAcc;
 
      try{
         const sendercustomer = await Customer.findById(req.customer._id);
         SenderAccountNumber = sendercustomer.AccountNumber;
         if(sendercustomer){
-         const customerTrans = await Transfer.create({AmountDebit, ReceiverAccountNumber, CustomerAcc, SenderAccountNumber});
-         AccountNumber = ReceiverAccountNumber;
+         const customerTrans = await Transfer.create({AmountDebit, AccountNumber, CustomerAcc});
+        //  AccountNumber = ReceiverAccountNumber;
          const receivercustomer = await Customer.findOne({AccountNumber});
          if(customerTrans){
                  res.status(201);
                  res.json({
                      msg: "Successful transaction",
                      AmountDebit: customerTrans.AmountDebit,
-                     ReceiverAccountNumber: customerTrans.ReceiverAccountNumber,   
-                     SenderAccountNumber,
+                     AccountNumber: customerTrans.AccountNumber,
+                     CustomerAcc   
                      
                  });
-                 
+                //  console.log(sendercustomer.TotalBalance);
                  remaining = sendercustomer.TotalBalance - AmountDebit;
                 
                  await Customer.findOneAndUpdate({_id: req.customer},{
@@ -48,9 +49,10 @@ module.exports.transfer_amount = async(req,res) => {
                  
                 
                  AmountCredit = AmountDebit;
-                 CustomerAcc = receivercustomer._id
+                 CustomerAcc = receivercustomer._id;
+                 AccountNumber = sendercustomer.AccountNumber;
 
-                 await Transfer.create({AmountCredit, ReceiverAccountNumber, SenderAccountNumber, CustomerAcc});
+                 await Transfer.create({AmountCredit, AccountNumber, CustomerAcc });
                          
          }
         }
@@ -86,3 +88,26 @@ module.exports.get_details = async(req,res) => {
     }
     
 }
+
+module.exports.get_dummy_details = async(req,res) => {
+    try{
+    const users = await Customer.find();
+    if(users.length !== 0){
+      res.status(200).json({
+       users,
+       count: users.length
+      });
+    }
+    else{
+      res.status(200).json({
+        msg: "No User Exist"
+      });
+    }
+  }
+  catch(err){
+    console.log(err);
+    res.status(400).json({
+      msg: 'Server Error'
+    });
+  }
+  }

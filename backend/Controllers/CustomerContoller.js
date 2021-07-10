@@ -8,6 +8,30 @@ const createToken = (id) => {
   });
   }
 
+
+//error handling
+const handleErrors = (err) => {
+  console.log(err.message, err.code);
+  let error;
+
+
+  if(err.message === "Invalid Details"){
+    error = "Email or Password incorrect";
+   
+  }
+
+
+  if (err.message.includes('User validation failed')) {
+    Object.values(err.errors).forEach(({ properties }) => {
+      errors[properties.path] = properties.message;
+    });
+  }
+return error;
+}
+
+
+  
+
 module.exports.customer_signup = async(req,res) => {
 
     const{FullName, email, password, AccountNumber, TotalBalance} = req.body;
@@ -50,17 +74,15 @@ module.exports.customer_login = async(req,res) => {
             const token = createToken(customer._id);
             res.status(200);
             res.json({
-                _id: customer._id,
-                FullName: customer.FullName,
-                email: customer.email,
-                password: customer.password,
+                customer,
                 token:token
             })
         }
     }
     catch(err){
-        console.log(err);
-    }
+        const error = handleErrors(err);
+        res.status(400).json({error});
+      }
 }
 
 module.exports.user_details = async(req, res) => {
@@ -80,3 +102,4 @@ module.exports.user_details = async(req, res) => {
         console.log(err);
     }
 }
+

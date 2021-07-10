@@ -1,7 +1,9 @@
 import React, {useState} from 'react'
 import styled from 'styled-components';
 import axios from 'axios';
-import { getUser } from "../Utils/Common";
+import { useHistory } from "react-router-dom";
+import { setUserSession } from '../Utils/Common';
+
 
 const Head_Container = styled.div`
 background-color: #ffffff;
@@ -31,7 +33,6 @@ padding: 10px 30px;
 `
 const Form_Main = styled.div`
 padding: 20px 30px;
-
   button {
 	background-color: #113ed3;
 	border: 2px solid #4734f5;
@@ -42,7 +43,13 @@ padding: 20px 30px;
 	font-size: 16px;
 	padding: 10px;
 	margin-top: 20px;
+	cursor: pointer;
 	width: 100%;
+  }
+
+  error{
+	  color: red;
+	  margin-bottom: 1px;
   }
 `
 
@@ -50,13 +57,10 @@ const Form_Control = styled.div`
 margin-bottom: 10px;
 	padding-bottom: 20px;
 	position: relative;
-
-
 	label {
 		display: inline-block;
 		margin-bottom: 5px;
 	}
-
 	input {
 		border: 2px solid #f0f0f0;
 	border-radius: 4px;
@@ -66,34 +70,33 @@ margin-bottom: 10px;
 	padding: 10px;
 	width: 100%;
 	}
-
 	input:focus{
 		outline: 0;
 	border-color: #777;
 	}
 `
 
-function Transfer() {
+function AdminLogin() {
 
-	const customer = getUser();
+	let history = useHistory();
     
-	const[AmountDebit, setAcc] = useState('');
-	const[AccountNumber, setAmount] = useState('');
+	const[Username, setUsername] = useState('');
+	const[password, setPassword] = useState('');
 	const [error, setError] = useState(null);
 	const[loading, setLoading] = useState(false);
 
-	const handleTransfer = () => {
+	const handleLogin = () => {
 
 		setError(null);
 		setLoading(true);
 
-		axios.post("http://localhost:5000/app/tranfer-amount", {
-			AmountDebit: AmountDebit,
-			AccountNumber: AccountNumber
+		axios.post("http://localhost:5000/app/admin-login", {
+			Username:Username,
+			password: password
 		}).then(response => {
 			setLoading(false);
-			// setUserSession(response.data.token, response.data.customer)
-			// history.push('/user-details');
+			setUserSession(response.data.token, response.data.customer)
+			history.push('/bank-details');
            console.log('response >>>', response);
 		}).catch(error => {
 		 setLoading(false)
@@ -105,40 +108,39 @@ function Transfer() {
 		}
          console.log('error >>>', error);
 		});
-		// history.push('/user-details');
+		
+
 	}
 
-
-    return(
+	return(
         <>
-         		<Head_Container>
+		<Head_Container>
 		<Container>
 			<Header>
-				<h2>Transfer Amount</h2>
+				<h2>Admin Login</h2>
 			</Header>
 			<Form_Main>
-				
 				<Form_Control>
-					<label htmlFor="A">Account Number</label> 
-					<input
-					value= {AccountNumber}
-					onChange= {e => setAmount(e.target.value)}
-					name="AccountNumber"
-					 type="text" 
-					 id="AccountNumber" />
+					<label htmlFor="Username">Username</label> 
+					<input 
+					value= {Username}
+					onChange= {e => setUsername(e.target.value)}
+					name="Username" 
+					type="Username"
+					id="Username" />
 				</Form_Control>
 				<Form_Control>
-					<label htmlFor="AmountDebit">Amount</label> 
-					<input 
-					value= {AmountDebit}
-					onChange= {e => setAcc(e.target.value)}
-					name="AmmountDebit" 
-					type="AmountDebit"
-					id="AmountDebit" />
+					<label htmlFor="Password">Password</label> 
+					<input
+					value= {password}
+					onChange= {e => setPassword(e.target.value)}
+					name="password"
+					 type="password" 
+					 id="password" />
 				</Form_Control>
 				{error && <p className="error">{error}</p>}
 				<button 
-				onClick ={handleTransfer} 
+				onClick ={handleLogin} 
 				value={loading ? "loading..." :"Login"}
 				disabled={loading}
 				type="submit">Submit</button>
@@ -148,7 +150,7 @@ function Transfer() {
         </>
 
     );
-	
-}
+ }
 
-export default Transfer;
+
+export default AdminLogin;

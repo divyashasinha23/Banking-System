@@ -1,5 +1,6 @@
-import React from 'react'
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
+import { getUser } from "../Utils/Common";
 
 const Head_Container = styled.div`
 background-color: #ffffff;
@@ -16,16 +17,16 @@ const Container = styled.div`
 	border-radius: 5px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 	overflow: hidden;
-	width: 400px;
-	max-width: 100%;
-h2{
-	margin: 0;
-}
+	width: 700px;
+    height: 400px;
+	
 	
 `
 const Header = styled.div`
 border-bottom: 1px solid #f0f0f0;
 padding: 10px 30px;
+text-align: center;
+font-size: 20px;
 `
 const Form_Main = styled.div`
 padding: 20px 30px;
@@ -47,49 +48,33 @@ const Form_Control = styled.div`
 margin-bottom: 10px;
 	padding-bottom: 20px;
 	position: relative;
-	label {
-		display: inline-block;
-		margin-bottom: 5px;
-	}
-	input {
-		border: 2px solid #f0f0f0;
-	border-radius: 4px;
-	display: block;
-	font-family: inherit;
-	font-size: 14px;
-	padding: 10px;
-	width: 100%;
-	}
-	input:focus{
-		outline: 0;
-	border-color: #777;
-	}
-`
 	
-function Login() {
-    return(
-        <>
-		<Head_Container>
+`
+
+function Profile(props) {
+
+	const customer = getUser();
+
+  return(
+  <>
+      	<Head_Container>
 		<Container>
 			<Header>
-				<h2>Login</h2>
+				<h2>Welcome User!</h2>
 			</Header>
 			<Form_Main>
 				<Form_Control>
-					<label for="Email">Email</label> 
-					<input name="Email" type="email" id="email" />
+					<h2 className="content">Full Name: {customer.FullName} </h2>
+                    <h2 className="content">Account Number: {customer.AccountNumber}</h2>
+                    <h2 className="content">Total Balance:  {customer.TotalBalance}</h2>
 				</Form_Control>
-				<Form_Control>
-					<label for="Password">Password</label> 
-					<input name="Password" type="password" id="password" />
-				</Form_Control>
-				<button type="submit">Submit</button>
 			</Form_Main>
 		</Container>
 		</Head_Container>
-        </>
+  </>
 
-    );
+  );
+    
 }
 
-export default Login;
+export default Profile
