@@ -97,7 +97,7 @@ function AdminLogin() {
 			setLoading(false);
 			setUserSession(response.data.token, response.data.customer)
 			history.push('/bank-details');
-           console.log('response >>>', response);
+           console.log('response ', response);
 		}).catch(error => {
 		 setLoading(false)
 		 if(error.response.status === 401 || error.response.status === 400){
@@ -106,7 +106,7 @@ function AdminLogin() {
 		else{
 			setError("Something went wrong");
 		}
-         console.log('error >>>', error);
+         console.log('error ', error);
 		});
 		
 

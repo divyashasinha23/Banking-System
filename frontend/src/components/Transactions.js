@@ -5,7 +5,8 @@ import { getUser } from '../Utils/Common';
 
 class Transaction extends Component {
     state={
-          posts:[]
+          posts:[],
+          loading: true,
       
     };
 
@@ -19,12 +20,14 @@ class Transaction extends Component {
       config
       )
 
-      const posts = res.data;
-      this.setState({ posts:posts})
+      const posts = res.data.Detail;
+      
+      this.setState({ posts:posts, loading: false});
       console.log(posts);
     }
      
      componentDidMount() {
+      this.setState({loading: true});
         
        this.getPost();
 
@@ -38,6 +41,22 @@ class Transaction extends Component {
       //   this.setState({ posts });
       //   console.log(posts);
       // });
+    }
+
+    renderTable = () => {
+       var user =[];
+      if(this.state.posts){
+        user = this.state.posts.map(post => {
+          return (
+            <tr>
+              <td>{post.AccountNumber}</td>
+              <td>{post.AmountCredit}</td>
+              <td>{post.AmountDebit}</td>
+            </tr>
+          )
+        })
+        return user;
+      }
     }
 
 
@@ -57,15 +76,18 @@ class Transaction extends Component {
     </tr>
   </thead>
   <tbody>
-    {this.state.posts.length === 0 ? <p>loading.......</p> : 
-    this.state.posts.map(post => 
+    {/* {this.state.loading ?(
+      <p>loading.......</p>
+    )  : ( 
+    this.state.posts.map(post => (
       <tr>
         <td>{post.AccountNumber}</td>
         <td>{post.AmountCredit}</td>
         <td>{post.AmountDebit}</td>
       </tr>
-      )
-    }
+      ))
+    )} */}
+    {this.renderTable()}
   </tbody>
 </table>
               

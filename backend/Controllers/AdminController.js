@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const Admin = require('../Models/Admin');
 const Customer = require('../Models/Customer');
+const Transfer = require('../Models/CustomerTransaction');
+const BankDetail = require('../Models/BankDetails');
 
 const createToken = (id) => {
     return jwt.sign({id}, "adminsecretkey" ,{
@@ -74,6 +76,8 @@ module.exports.all_user = async(req,res) => {
   }
 
 module.exports.bank_details = async(req,res) => {
+
+  // await BankDetail.create({TotalCustomer, TotalAmount});
  
   try{
     let totalSum = 0;
@@ -81,8 +85,14 @@ module.exports.bank_details = async(req,res) => {
     for(let index =0 ; index< users.length; index++){
       totalSum = totalSum + users[index].TotalBalance
     }
+
      TotalCustomer = users.length;
      TotalAmount = totalSum;
+
+     await Admin.findOneAndUpdate({_id: req.admin},{
+       TotalCustomer : users.length,
+       TotalAmount : totalSum
+     });
 
     //  Admin.create({T})
 
@@ -96,6 +106,66 @@ module.exports.bank_details = async(req,res) => {
   }
   catch(err){
     console.log(err);
+  }
+
+}
+
+module.exports.credit_amount = async(req,res) => {
+
+  let{AccountNumber, AmountCredit} = req.body;
+  var increase;
+  var CustomerAcc;
+
+  try{
+    
+    const receivercustomer = await Customer.findOne({AccountNumber}); 
+
+    increase = receivercustomer.TotalBalance + AmountCredit;
+
+    await Customer.findOneAndUpdate({AccountNumber}, {
+      TotalBalance : increase
+  });
+    AccountNumber = "Admin";
+    CustomerAcc = receivercustomer._id;
+    const customerTrans = await Transfer.create({AccountNumber, AmountCredit, CustomerAcc});
+    if(customerTrans){
+       res.status(201).json({
+         msg: "Successfull transaction"
+       });
+    }
+  }
+  catch(error){
+    console.log(error);
+  }
+
+}
+
+module.exports.debit_amount = async(req, res) => {
+ 
+  let{AccountNumber, AmountDebit} = req.body;
+  var remaining;
+  var CustomerAcc;
+
+  try{
+    
+    const receivercustomer = await Customer.findOne({AccountNumber}); 
+
+    remaining = receivercustomer.TotalBalance - AmountDebit;
+
+    await Customer.findOneAndUpdate({AccountNumber}, {
+      TotalBalance : remaining
+  });
+    AccountNumber = "Admin";
+    CustomerAcc = receivercustomer._id;
+    const customerTrans = await Transfer.create({AccountNumber, AmountDebit, CustomerAcc});
+    if(customerTrans){
+       res.status(201).json({
+         msg: "Successfull transaction"
+       });
+    }
+  }
+  catch(error){
+    console.log(error);
   }
 
 }

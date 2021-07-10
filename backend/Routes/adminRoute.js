@@ -14,10 +14,10 @@ router.post('/add-new-user',AdminAuth, AddUser.add_user);
 router.get('/All-Users', AdminAuth, AdminController.all_user);
 router.get('/bank-details', AdminAuth, AdminController.bank_details);
 
-// //credit Amount
-// router.post('/Credit', AdminController.credit_amount);
+//credit Amount
+router.post('/Credit', AdminAuth, AdminController.credit_amount);
 
-// //debit Amount
-// router.post('/Debit', AdminController.debit_amount);
+//debit Amount
+router.post('/Debit', AdminController.debit_amount);
 
 module.exports = router;

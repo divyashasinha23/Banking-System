@@ -52,7 +52,8 @@ margin-bottom: 10px;
 `
 
 function BankDetails() {
-  
+   
+	const admin = getUser();
 	
 
   return(
@@ -60,7 +61,7 @@ function BankDetails() {
       	<Head_Container>
 		<Container>
 			<Header>
-				<h2>Welcome User!</h2>
+				<h2>Welcome Amin!</h2>
 			</Header>
 			<Form_Main>
 				<Form_Control>

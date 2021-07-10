@@ -20,7 +20,7 @@ const res = await axios.get(`http://localhost:5000/app/All-users`,
 config
 )
 
-const posts = res.data;
+const posts = res.data.users;
 this.setState({ posts:posts})
 console.log(posts);
 }
@@ -40,6 +40,22 @@ componentDidMount() {
 //   console.log(posts);
 // });
 }
+
+renderTable = () => {
+  var user =[];
+ if(this.state.posts){
+   user = this.state.posts.map(post => {
+     return (
+       <tr>
+         <td>{post.FullName}</td>
+         <td>{post.AccountNumber}</td>
+         <td>{post.TotalBalance}</td>
+       </tr>
+     )
+   })
+   return user;
+ }
+}
     
    
 
@@ -58,16 +74,7 @@ componentDidMount() {
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
+  {this.renderTable()}
   </tbody>
 </table>
               
