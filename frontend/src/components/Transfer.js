@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import styled from 'styled-components';
 import axios from 'axios';
-import { getUser } from "../Utils/Common";
+import { getToken } from "../Utils/Common";
 
 const Head_Container = styled.div`
 background-color: #ffffff;
@@ -76,42 +76,50 @@ margin-bottom: 10px;
 function Transfer() {
 
 	
-	const token = sessionStorage.getItem("token") || null;
-    console.log(token);
-    const config = {
-        headers: { 
-			'Content-Type' : 'application/json',
-		    'Accept' : 'application/json',
-			Authorization: `Bearer ${token}` }
+	// const token = sessionStorage.getItem("token") || null;
+	// const token = getToken();
+    // console.log(token);
+    // const config = {
+    //     headers: { 
+	// 		'Content-Type' : 'application/json',
+	// 	    'Accept' : 'application/json',
+	// 		Authorization: `Bearer ${token}` }
         
-    };
+    // };
     
 	const[AmountDebit, setAcc] = useState('');
 	const[AccountNumber, setAmount] = useState('');
-	const [error, setError] = useState(null);
 	const[loading, setLoading] = useState(false);
 
-	const handleTransfer = () => {
+	const handleTransfer = async () => {
 
-		setError(null);
 		setLoading(true);
 
-		axios.post("http://localhost:5000/app/tranfer-amount", config, {
+		const token = getToken();
+		console.log(token);
+		const config = {
+			headers: { 
+				'Content-Type' : 'application/json',
+				'Accept' : 'application/json',
+				Authorization: `Bearer ${token}` }
+			
+		};
+		
+		const bodyParameters = {
 			AmountDebit: AmountDebit,
-			AccountNumber: AccountNumber
-		}).then(response => {
+			AccountNumber: AccountNumber,
+		}
+		await axios.post("http://localhost:5000/app/tranfer-amount", 
+		bodyParameters,
+		config,
+	
+			
+	).then(response => {
 			setLoading(false);
-			// setUserSession(response.data.token, response.data.customer)
-			// history.push('/user-details');
+		
            console.log('response >>>', response);
 		}).catch(error => {
 		 setLoading(false)
-		 if(error.response.status === 401 || error.response.status === 400){
-		 setError(error.response.data.message);
-		}
-		else{
-			setError("Something went wrong");
-		}
          console.log('error >>>', error);
 		});
 		// history.push('/user-details');
@@ -142,10 +150,9 @@ function Transfer() {
 					value= {AmountDebit}
 					onChange= {e => setAcc(e.target.value)}
 					name="AmmountDebit" 
-					type="AmountDebit"
+					type="Number"
 					id="AmountDebit" />
 				</Form_Control>
-				{error && <p className="error">{error}</p>}
 				<button 
 				onClick ={handleTransfer} 
 				value={loading ? "loading..." :"Login"}

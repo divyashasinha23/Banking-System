@@ -2,8 +2,8 @@ import React, {useState} from 'react'
 import styled from 'styled-components';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
-import { setUserSession } from '../Utils/Common';
-import { Link } from 'react-router-dom'
+import { getToken, setUserSession } from '../Utils/Common';
+
 
 
 const Head_Container = styled.div`
@@ -91,16 +91,7 @@ const SigninAdmmin = styled.div`
 
  function AddNewUSer() {
 
-	
-
-    const token = sessionStorage.getItem("token") || null;
-    console.log(token);
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-        
-    };
-
-    
+	let history = useHistory();
     
 	const[email, setEmail] = useState('');
 	const[FullName, setFullName] = useState('');
@@ -108,19 +99,33 @@ const SigninAdmmin = styled.div`
 
 	const handleNew = async() => {
 
+		const token = getToken();
+    console.log(token);
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+        
+    };
+	 const bodyParameters = {
+        email:email,
+		FullName: FullName
+	 }
+
 		setLoading(true);
 
-		await axios.post("http://localhost:5000/app/add-new-user", config ,{
-			email:email,
-			FullName: FullName
-		}).then(response => {
+		await axios.post("http://localhost:5000/app/add-new-user" ,
+			bodyParameters,
+			config
+		).then(response => {
 			setLoading(false);
            console.log('response >>>', response);
+		   alert("New User Added")
+		   alert("Password "+ response.data.NewPassword);
 		}).catch(error => {
 		 setLoading(false)
          console.log('error >>>', error);
 		});
-
+		
+		
 	}
 
 	return(

@@ -18,6 +18,7 @@ import BankDetails from './components/BankDetails';
 import AllUser from './components/AllUser';
 import dummyUser from './components/dummyUser';
 import AddNewUSer from './components/AddNewUser';
+import NewUserDetail from './components/NewUserDetail';
 
 function App() {
   return (
@@ -67,6 +68,12 @@ function App() {
           <AdminNavbar/>
           <AllUser />
          
+        </PrivateRoute>
+
+        <PrivateRoute path="/new-user-detail" exact>
+          <AdminNavbar/>
+          <NewUserDetail />
+           <Footer />
         </PrivateRoute>
 
         <PrivateRoute path="/bank-details" exact>

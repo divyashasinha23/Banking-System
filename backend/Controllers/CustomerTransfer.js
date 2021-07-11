@@ -10,7 +10,7 @@ mongoose.set('useUnifiedTopology', true);
 
 module.exports.transfer_amount = async(req,res) => {
    
-     var{AmountDebit, AccountNumber, CustomerAcc} = req.body;
+     var{AmountDebit, AccountNumber} = req.body;
      var remaining;
      var increase;
      var SenderAccountNumber
@@ -20,6 +20,7 @@ module.exports.transfer_amount = async(req,res) => {
 
      try{
         const sendercustomer = await Customer.findById(req.customer._id);
+        CustomerAcc = req.customer._id
         SenderAccountNumber = sendercustomer.AccountNumber;
         if(sendercustomer){
          const customerTrans = await Transfer.create({AmountDebit, AccountNumber, CustomerAcc});
