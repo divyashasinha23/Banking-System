@@ -41,9 +41,7 @@ module.exports.admin_login = async(req,res) => {
             const token = createToken(admin._id);
             res.status(200);
             res.json({
-                _id: admin._id,
-                email: admin.email,
-                password: admin.password,
+                admin,
                 token:token
             })
         }

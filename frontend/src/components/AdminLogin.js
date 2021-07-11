@@ -95,7 +95,7 @@ function AdminLogin() {
 			password: password
 		}).then(response => {
 			setLoading(false);
-			setUserSession(response.data.token, response.data.customer)
+			setUserSession(response.data.token, response.data.admin)
 			history.push('/bank-details');
            console.log('response ', response);
 		}).catch(error => {

@@ -89,39 +89,37 @@ const SigninAdmmin = styled.div`
  }
 `
 
-function LoginForm() {
+ function AddNewUSer() {
 
-	let history = useHistory();
+	
+
+    const token = sessionStorage.getItem("token") || null;
+    console.log(token);
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+        
+    };
+
+    
     
 	const[email, setEmail] = useState('');
-	const[password, setPassword] = useState('');
-	const [error, setError] = useState(null);
+	const[FullName, setFullName] = useState('');
 	const[loading, setLoading] = useState(false);
 
-	const handleLogin = () => {
+	const handleNew = async() => {
 
-		setError(null);
 		setLoading(true);
 
-		axios.post("http://localhost:5000/app/customer-login", {
+		await axios.post("http://localhost:5000/app/add-new-user", config ,{
 			email:email,
-			password: password
+			FullName: FullName
 		}).then(response => {
 			setLoading(false);
-			setUserSession(response.data.token, response.data.customer)
-			history.push('/user-details');
            console.log('response >>>', response);
 		}).catch(error => {
 		 setLoading(false)
-		 if(error.response.status === 401 || error.response.status === 400){
-		 setError(error.response.data.error);
-		}
-		else{
-			setError("Something went wrong");
-		}
          console.log('error >>>', error);
 		});
-		// history.push('/user-details');
 
 	}
 
@@ -130,36 +128,32 @@ function LoginForm() {
 		<Head_Container>
 		<Container>
 			<Header>
-				<h2>Login</h2>
+				<h2>Add New Customer</h2>
 			</Header>
 			<Form_Main>
 				<Form_Control>
-					<label htmlFor="Email">Email</label> 
+					<label htmlFor="Name">Full Name</label> 
 					<input 
-					value= {email}
-					onChange= {e => setEmail(e.target.value)}
-					name="email" 
-					type="email"
-					id="email" />
+					value= {FullName}
+					onChange= {e => setFullName(e.target.value)}
+					name="FullName" 
+					type="FullName"
+					id="FullName" />
 				</Form_Control>
 				<Form_Control>
-					<label htmlFor="Password">Password</label> 
+					<label htmlFor="Email">Email</label> 
 					<input
-					value= {password}
-					onChange= {e => setPassword(e.target.value)}
-					name="password"
-					 type="password" 
-					 id="password" />
+					value= {email}
+					onChange= {e => setEmail(e.target.value)}
+					name="email"
+					 type="email" 
+					 id="email" />
 				</Form_Control>
-				{error && <p className="error">{error}</p>}
 				<button 
-				onClick ={handleLogin} 
+				onClick ={handleNew} 
 				value={loading ? "loading..." :"Login"}
 				disabled={loading}
 				type="submit">Submit</button>
-				<SigninAdmmin>
-					<Link to="/sign-in-admin"><h2>Login-Admin</h2></Link>
-				</SigninAdmmin>
 			</Form_Main>
 		</Container>
 		</Head_Container>
@@ -169,4 +163,4 @@ function LoginForm() {
  }
 
 
-export default LoginForm;
+export default AddNewUSer;

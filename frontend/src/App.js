@@ -17,6 +17,7 @@ import AdminNavbar from './components/AdminNavbar';
 import BankDetails from './components/BankDetails';
 import AllUser from './components/AllUser';
 import dummyUser from './components/dummyUser';
+import AddNewUSer from './components/AddNewUser';
 
 function App() {
   return (
@@ -45,11 +46,11 @@ function App() {
          <dummyUser />
          </PublicRoute>
 
-        <Route path='/transfer' exact render = {props => {}}>
+        <PrivateRoute path='/transfer' exact render = {props => {}}>
           <Navbar />
           <Transfer />
           <Footer />
-        </Route>   
+        </PrivateRoute>   
 
          <PrivateRoute path='/user-details' exact>
            <Navbar/>
@@ -62,17 +63,23 @@ function App() {
           <Transaction />
         </PrivateRoute>
 
-        <Route path="/users" exact>
+        <PrivateRoute path="/users" exact>
           <AdminNavbar/>
           <AllUser />
          
-        </Route>
+        </PrivateRoute>
 
-        <Route path="/bank-details" exact>
+        <PrivateRoute path="/bank-details" exact>
           <AdminNavbar/>
           <BankDetails />
           <Footer />
-        </Route>
+        </PrivateRoute>
+
+        <PrivateRoute path="/add-new-customer" exact>
+          <AdminNavbar/>
+          <AddNewUSer />
+          <Footer />
+        </PrivateRoute>
     
      </Switch>
     

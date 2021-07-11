@@ -18,7 +18,7 @@ const Container = styled.div`
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 	overflow: hidden;
 	width: 700px;
-    height: 400px;
+    height: 300px;
 	
 	
 `
@@ -45,13 +45,16 @@ padding: 20px 30px;
 `
 
 const Form_Control = styled.div`
+h2{
+	margin-top: 20px;
+}
 margin-bottom: 10px;
 	padding-bottom: 20px;
 	position: relative;
 	
 `
 
-function BankDetails() {
+function BankDetails(props) {
    
 	const admin = getUser();
 	
@@ -65,8 +68,8 @@ function BankDetails() {
 			</Header>
 			<Form_Main>
 				<Form_Control>
-					<h2 className="content">Total Amount</h2>
-                    <h2 className="content">Total User </h2>
+					<h2 className="content">Total Amount :{admin.TotalAmount}</h2>
+                    <h2 className="content">Total User: {admin.TotalCustomer} </h2>
 				</Form_Control>
 			</Form_Main>
 		</Container>

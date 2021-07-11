@@ -1,8 +1,23 @@
 
-
 import React, {Component} from 'react';
 import MaterialTable from 'material-table';
 import axios from 'axios';
+import styled from "styled-components";
+import { Link } from 'react-router-dom'
+
+
+const Button = styled.div`
+padding: 8px 20px;
+color:#fff
+border-radius: 4px;
+outline: none;
+cursor: pointer;
+font-size: 20px;
+white-space: nowrap;
+margin-left: 1000px;
+
+
+`
 
 class AllUser extends Component {
   state={
@@ -77,6 +92,9 @@ renderTable = () => {
   {this.renderTable()}
   </tbody>
 </table>
+<Button>
+<Link to="/add-new-customer">Add New Customer</Link>
+</Button>
               
             </>
             );

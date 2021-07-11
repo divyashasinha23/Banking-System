@@ -75,7 +75,16 @@ margin-bottom: 10px;
 
 function Transfer() {
 
-	const customer = getUser();
+	
+	const token = sessionStorage.getItem("token") || null;
+    console.log(token);
+    const config = {
+        headers: { 
+			'Content-Type' : 'application/json',
+		    'Accept' : 'application/json',
+			Authorization: `Bearer ${token}` }
+        
+    };
     
 	const[AmountDebit, setAcc] = useState('');
 	const[AccountNumber, setAmount] = useState('');
@@ -87,7 +96,7 @@ function Transfer() {
 		setError(null);
 		setLoading(true);
 
-		axios.post("http://localhost:5000/app/tranfer-amount", {
+		axios.post("http://localhost:5000/app/tranfer-amount", config, {
 			AmountDebit: AmountDebit,
 			AccountNumber: AccountNumber
 		}).then(response => {
