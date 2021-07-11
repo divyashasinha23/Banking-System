@@ -73,7 +73,7 @@ margin-bottom: 10px;
 	}
 `
 
-function Transfer() {
+function Debit() {
 
 	
 	// const token = sessionStorage.getItem("token") || null;
@@ -109,7 +109,7 @@ function Transfer() {
 			AmountDebit: Number(AmountDebit),
 			AccountNumber: AccountNumber,
 		}
-		await axios.post("http://localhost:5000/app/tranfer-amount", 
+		await axios.post("http://localhost:5000/app/Debit", 
 		bodyParameters,
 		config,
 	
@@ -123,6 +123,7 @@ function Transfer() {
          console.log('error >>>', error);
 		});
 		// history.push('/user-details');
+        alert("Amount Debited Successfully")
 	}
 
 
@@ -145,7 +146,7 @@ function Transfer() {
 					 id="AccountNumber" />
 				</Form_Control>
 				<Form_Control>
-					<label htmlFor="AmountDebit">Amount</label> 
+					<label htmlFor="AmountDebit">Debit Amount</label> 
 					<input 
 					value= {AmountDebit}
 					onChange= {e => setAcc(e.target.value)}
@@ -167,4 +168,4 @@ function Transfer() {
 	
 }
 
-export default Transfer;
+export default Debit;

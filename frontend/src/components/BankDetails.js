@@ -1,6 +1,7 @@
+import axios from "axios";
 import React from "react";
 import styled from "styled-components";
-import { getUser } from "../Utils/Common";
+import { getUser, getToken } from "../Utils/Common";
 
 const Head_Container = styled.div`
 background-color: #ffffff;
@@ -56,6 +57,27 @@ margin-bottom: 10px;
 
 function BankDetails(props) {
    
+
+	// const token = getToken();
+	// console.log(token);
+	// const config = {
+	// 	headers: { 
+	// 		'Content-Type' : 'application/json',
+	// 		'Accept' : 'application/json',
+	// 		Authorization: `Bearer ${token}` }
+		
+	// };
+
+	// const admin = axios.get('http://localhost:5000/app/bank-details', config
+	// ).then(response => {
+	// 	console.log(response.data.TotalAmount);
+	// 	console.log(response.data.TotalCustomer);
+	// }).catch(error => {
+	// 	console.log(error);
+	// });
+
+	// console.log(admin);
+
 	const admin = getUser();
 	
 

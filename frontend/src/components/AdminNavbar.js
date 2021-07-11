@@ -32,7 +32,7 @@ function AdminNavbar() {
         <IconContext.Provider value={{color: '#fff'}}>
           <div className="navbar">
               <div className="navbar-container container">
-                  <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
+                  <Link to="/Admin" className="navbar-logo" onClick={closeMobileMenu}>
                       { <FaAtlassian className='navbar-icon' /> }
                       Mini Bank
                   </Link>
@@ -51,8 +51,13 @@ function AdminNavbar() {
                         </Link>
                     </li> 
                     <li className='nav-item'>
-                        <Link to= '/admin-transfer' className='nav-links' onClick={closeMobileMenu}>
-                            Credit/Debit
+                        <Link to= '/admin-transfer-credit' className='nav-links' onClick={closeMobileMenu}>
+                            Credit
+                        </Link>
+                    </li> 
+                    <li className='nav-item'>
+                        <Link to= '/admin-transfer-debit' className='nav-links' onClick={closeMobileMenu}>
+                            Debit
                         </Link>
                     </li> 
                  </ul>

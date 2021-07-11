@@ -73,7 +73,7 @@ margin-bottom: 10px;
 	}
 `
 
-function Transfer() {
+function Credit() {
 
 	
 	// const token = sessionStorage.getItem("token") || null;
@@ -87,7 +87,7 @@ function Transfer() {
         
     // };
     
-	const[AmountDebit, setAcc] = useState('');
+	const[AmountCredit, setAcc] = useState('');
 	const[AccountNumber, setAmount] = useState('');
 	const[loading, setLoading] = useState(false);
 
@@ -106,10 +106,10 @@ function Transfer() {
 		};
 		
 		const bodyParameters = {
-			AmountDebit: Number(AmountDebit),
+			AmountCredit: Number(AmountCredit),
 			AccountNumber: AccountNumber,
 		}
-		await axios.post("http://localhost:5000/app/tranfer-amount", 
+		await axios.post("http://localhost:5000/app/Credit", 
 		bodyParameters,
 		config,
 	
@@ -123,6 +123,7 @@ function Transfer() {
          console.log('error >>>', error);
 		});
 		// history.push('/user-details');
+        alert("Amount Credited Successfully")
 	}
 
 
@@ -145,13 +146,13 @@ function Transfer() {
 					 id="AccountNumber" />
 				</Form_Control>
 				<Form_Control>
-					<label htmlFor="AmountDebit">Amount</label> 
+					<label htmlFor="AmountDebit">Credit Amount</label> 
 					<input 
-					value= {AmountDebit}
+					value= {AmountCredit}
 					onChange= {e => setAcc(e.target.value)}
-					name="AmmountDebit" 
+					name="AmmountCredit" 
 					type="text"
-					id="AmountDebit" />
+					id="AmountCredit" />
 				</Form_Control>
 				<button 
 				onClick ={handleTransfer} 
@@ -167,4 +168,4 @@ function Transfer() {
 	
 }
 
-export default Transfer;
+export default Credit;

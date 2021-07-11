@@ -14,12 +14,6 @@ const TransactionSchema = new mongoose.Schema({
          type:Number,
          default: 0
      },
-     SenderAccountNumber:{
-         type:String
-     },
-     ReceiverAccountNumber:{
-         type:String
-     },
      AccountNumber:{
          type:String
      }

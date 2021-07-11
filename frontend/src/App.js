@@ -18,7 +18,9 @@ import BankDetails from './components/BankDetails';
 import AllUser from './components/AllUser';
 import dummyUser from './components/dummyUser';
 import AddNewUSer from './components/AddNewUser';
-import NewUserDetail from './components/NewUserDetail';
+import Credit from './components/Credit';
+import Debit from './components/Debit';
+
 
 function App() {
   return (
@@ -26,6 +28,12 @@ function App() {
      <Switch>
        <Route path="/" exact>
          <Navbar />
+         <Home />
+         <Footer/>
+       </Route>
+
+       <Route path="/Admin" exact>
+       <AdminNavbar/>
          <Home />
          <Footer/>
        </Route>
@@ -70,15 +78,21 @@ function App() {
          
         </PrivateRoute>
 
-        <PrivateRoute path="/new-user-detail" exact>
-          <AdminNavbar/>
-          <NewUserDetail />
-           <Footer />
-        </PrivateRoute>
-
         <PrivateRoute path="/bank-details" exact>
           <AdminNavbar/>
           <BankDetails />
+          <Footer />
+        </PrivateRoute>
+
+        <PrivateRoute path="/admin-transfer-credit" exact>
+          <AdminNavbar/>
+          <Credit />
+          <Footer />
+        </PrivateRoute>
+
+        <PrivateRoute path="/admin-transfer-debit" exact>
+          <AdminNavbar/>
+          <Debit />
           <Footer />
         </PrivateRoute>
 

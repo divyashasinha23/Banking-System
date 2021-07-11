@@ -21,6 +21,7 @@ module.exports.transfer_amount = async(req,res) => {
      try{
         const sendercustomer = await Customer.findById(req.customer._id);
         CustomerAcc = req.customer._id
+        if(sendercustomer.TotalBalance > AmountDebit){
         SenderAccountNumber = sendercustomer.AccountNumber;
         if(sendercustomer){
          const customerTrans = await Transfer.create({AmountDebit, AccountNumber, CustomerAcc});
@@ -60,6 +61,12 @@ module.exports.transfer_amount = async(req,res) => {
         else{
             console.log("user not found");
         }
+      }
+      else{
+        res.status(401).json({
+          msg: "Insufficient Balance"
+        });
+      }
      }
      catch(err){
          console.log(err);
