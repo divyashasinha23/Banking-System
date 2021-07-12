@@ -96,8 +96,9 @@ function AdminLogin() {
 		}).then(response => {
 			setLoading(false);
 			setUserSession(response.data.token, response.data.admin)
-			history.push('/bank-details');
            console.log('response ', response);
+			history.push('/bank-details');
+
 		}).catch(error => {
 		 setLoading(false)
 		 if(error.response.status === 401 || error.response.status === 400){

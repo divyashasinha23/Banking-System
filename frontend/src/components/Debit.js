@@ -89,6 +89,7 @@ function Debit() {
     
 	const[AmountDebit, setAcc] = useState('');
 	const[AccountNumber, setAmount] = useState('');
+	const [error, setError] = useState(null);
 	const[loading, setLoading] = useState(false);
 
 	const handleTransfer = async () => {
@@ -116,14 +117,19 @@ function Debit() {
 			
 	).then(response => {
 			setLoading(false);
-		
+		    alert("Amount Debited Successfully")
            console.log('response >>>', response);
 		}).catch(error => {
-		 setLoading(false)
-         console.log('error >>>', error);
-		});
-		// history.push('/user-details');
-        alert("Amount Debited Successfully")
+			setLoading(false)
+			if(error.response.status === 401 || error.response.status === 400){
+			setError(error.response.data.error);
+		   }
+		   else{
+			   setError("Something went wrong");
+		   }
+			console.log('error >>>', error);
+		   });
+        
 	}
 
 
@@ -154,6 +160,7 @@ function Debit() {
 					type="text"
 					id="AmountDebit" />
 				</Form_Control>
+				{error && <p className="error">{error}</p>}
 				<button 
 				onClick ={handleTransfer} 
 				value={loading ? "loading..." :"Login"}

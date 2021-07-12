@@ -8,6 +8,33 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
+//Error Handling
+const handleErrors = (err) => {
+  console.log(err.message, err.code);
+  let error;
+
+
+  if(err.message === "Invalid Details"){
+    error = "Email or Password incorrect";
+   
+  }
+
+  if(err.message === "Insufficient Balance"){
+    error = "Balance Insufficient "
+  }
+
+
+  if (err.message.includes('User validation failed')) {
+    Object.values(err.errors).forEach(({ properties }) => {
+      errors[properties.path] = properties.message;
+    });
+  }
+return error;
+}
+
+
+
+//Credit & Debit Amount
 module.exports.transfer_amount = async(req,res) => {
    
      var{AmountDebit, AccountNumber} = req.body;
@@ -63,17 +90,18 @@ module.exports.transfer_amount = async(req,res) => {
         }
       }
       else{
-        res.status(401).json({
-          msg: "Insufficient Balance"
-        });
+         res.status(401);
+         throw Error("Insufficient Balance");
       }
      }
      catch(err){
-         console.log(err);
+      const error = handleErrors(err);
+      res.status(400).json({error});
      }
 
 }
 
+//Transaction details
 module.exports.get_details = async(req,res) => {
 
     try{

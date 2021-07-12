@@ -44,6 +44,10 @@ padding: 20px 30px;
 	margin-top: 20px;
 	width: 100%;
   }
+
+  error{
+	  color:#ff0f0f
+  }
 `
 
 const Form_Control = styled.div`
@@ -89,6 +93,7 @@ function Transfer() {
     
 	const[AmountDebit, setAcc] = useState('');
 	const[AccountNumber, setAmount] = useState('');
+	const [error, setError] = useState(null);
 	const[loading, setLoading] = useState(false);
 
 	const handleTransfer = async () => {
@@ -116,13 +121,19 @@ function Transfer() {
 			
 	).then(response => {
 			setLoading(false);
-		
            console.log('response >>>', response);
+		   alert("Transaction Sucessfull");
 		}).catch(error => {
-		 setLoading(false)
-         console.log('error >>>', error);
-		});
-		// history.push('/user-details');
+			setLoading(false)
+			if(error.response.status === 401 || error.response.status === 400){
+			setError(error.response.data.error);
+		   }
+		   else{
+			   setError("Something went wrong");
+		   }
+			console.log('error >>>', error);
+		   });
+		
 	}
 
 
@@ -153,6 +164,7 @@ function Transfer() {
 					type="text"
 					id="AmountDebit" />
 				</Form_Control>
+				{error && <p className="error">{error}</p>}
 				<button 
 				onClick ={handleTransfer} 
 				value={loading ? "loading..." :"Login"}

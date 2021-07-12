@@ -1,6 +1,7 @@
-import axios from "axios";
 import React from "react";
+import { Component } from "react";
 import styled from "styled-components";
+import axios from 'axios';
 import { getUser, getToken } from "../Utils/Common";
 
 const Head_Container = styled.div`
@@ -55,43 +56,52 @@ margin-bottom: 10px;
 	
 `
 
-function BankDetails(props) {
+class BankDetails extends Component {
    
-
-	// const token = getToken();
-	// console.log(token);
-	// const config = {
-	// 	headers: { 
-	// 		'Content-Type' : 'application/json',
-	// 		'Accept' : 'application/json',
-	// 		Authorization: `Bearer ${token}` }
-		
-	// };
-
-	// const admin = axios.get('http://localhost:5000/app/bank-details', config
-	// ).then(response => {
-	// 	console.log(response.data.TotalAmount);
-	// 	console.log(response.data.TotalCustomer);
-	// }).catch(error => {
-	// 	console.log(error);
-	// });
-
-	// console.log(admin);
-
-	const admin = getUser();
+	state={
+		admins:[],
+		loading: true,
 	
+  };
 
+
+	getUserDetails = async () => {
+		const token  = getToken();
+        const config = {
+			headers: { Authorization: `Bearer ${token}` }
+		};
+ 
+		 const res =await axios.get('http://localhost:5000/app/bank-details',
+		 config
+		 )
+
+		 const admins = res.data;
+		 this.setState({ admins:admins, loading: false});
+      console.log(admins);
+
+	}
+
+	componentDidMount() {
+		this.setState({loading: true});
+		this.getUserDetails();
+	}
+	
+	
+	
+render () {
+	const TotalCustomer = this.state.admins.TotalCustomer;
+	const TotalAmount = this.state.admins.TotalAmount;
   return(
   <>
       	<Head_Container>
 		<Container>
 			<Header>
-				<h2>Welcome Amin!</h2>
+				<h2>Welcome Admin!</h2>
 			</Header>
 			<Form_Main>
 				<Form_Control>
-					<h2 className="content">Total Amount :{admin.TotalAmount}</h2>
-                    <h2 className="content">Total User: {admin.TotalCustomer} </h2>
+					<h2 className="content">Total Amount Deposited: {TotalAmount} </h2>
+                    <h2 className="content">Number of Customers: {TotalCustomer}</h2>
 				</Form_Control>
 			</Form_Main>
 		</Container>
@@ -99,6 +109,7 @@ function BankDetails(props) {
   </>
 
   );
+}
     
 }
 

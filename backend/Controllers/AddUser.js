@@ -2,13 +2,14 @@ const mongoose = require("mongoose");
 const Customer = require('../Models/Customer');
 const jwt = require('jsonwebtoken');
 
-
+//jsonwebtoken
 const createToken = (id) => {
     return jwt.sign({id}, "customersecretkey" ,{
     expiresIn: '30d'
   });
   }
 
+//Adding new user  
 module.exports.add_user = async(req, res) => {
     const{FullName, email} = req.body;
     var password;

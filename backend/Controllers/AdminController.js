@@ -5,12 +5,34 @@ const Customer = require('../Models/Customer');
 const Transfer = require('../Models/CustomerTransaction');
 const BankDetail = require('../Models/BankDetails');
 
+
+//jsonwebtoken
 const createToken = (id) => {
     return jwt.sign({id}, "adminsecretkey" ,{
     expiresIn: '30d'
   });
   }
 
+//Error handling
+  const handleErrors = (err) => {
+    console.log(err.message, err.code);
+    let error;
+  
+  
+    if(err.message === "Insufficient Balance"){
+      error = "Balance Insufficient "
+    }
+  
+  
+    if (err.message.includes('User validation failed')) {
+      Object.values(err.errors).forEach(({ properties }) => {
+        errors[properties.path] = properties.message;
+      });
+    }
+  return error;
+  }  
+
+//Admin Signup 
 module.exports.admin_signup = async(req, res) => {
 
     const{Username, password} = req.body;
@@ -32,6 +54,8 @@ module.exports.admin_signup = async(req, res) => {
     }
 }
 
+
+//Admin Login
 module.exports.admin_login = async(req,res) => {
     const{Username, password} = req.body;
 
@@ -51,6 +75,8 @@ module.exports.admin_login = async(req,res) => {
     }
 }
 
+
+//All user details
 module.exports.all_user = async(req,res) => {
     try{
     const users = await Customer.find();
@@ -73,6 +99,7 @@ module.exports.all_user = async(req,res) => {
   }
   }
 
+//Bank details 
 module.exports.bank_details = async(req,res) => {
 
   // await BankDetail.create({TotalCustomer, TotalAmount});
@@ -86,6 +113,8 @@ module.exports.bank_details = async(req,res) => {
 
      TotalCustomer = users.length;
      TotalAmount = totalSum;
+
+    
 
      await Admin.findOneAndUpdate({_id: req.admin},{
        TotalCustomer : users.length,
@@ -108,6 +137,8 @@ module.exports.bank_details = async(req,res) => {
 
 }
 
+
+//Credit Amount
 module.exports.credit_amount = async(req,res) => {
 
   let{AccountNumber, AmountCredit} = req.body;
@@ -138,6 +169,8 @@ module.exports.credit_amount = async(req,res) => {
 
 }
 
+
+//Debit Amount 
 module.exports.debit_amount = async(req, res) => {
  
   let{AccountNumber, AmountDebit} = req.body;
@@ -147,6 +180,7 @@ module.exports.debit_amount = async(req, res) => {
   try{
     
     const receivercustomer = await Customer.findOne({AccountNumber}); 
+    if(receivercustomer.TotalBalance > AmountDebit){
 
     remaining = receivercustomer.TotalBalance - AmountDebit;
 
@@ -162,8 +196,14 @@ module.exports.debit_amount = async(req, res) => {
        });
     }
   }
-  catch(error){
-    console.log(error);
+  else{
+    res.status(401);
+    throw Error("Insufficient Balance");
   }
+  }
+  catch(err){
+    const error = handleErrors(err);
+    res.status(400).json({error});
+   }
 
 }

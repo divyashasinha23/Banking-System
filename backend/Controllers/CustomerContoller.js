@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Customer = require("../Models/Customer");
 const jwt = require('jsonwebtoken');
 
+//jsonwebtoken
 const createToken = (id) => {
     return jwt.sign({id}, "customersecretkey" ,{
     expiresIn: '30d'
@@ -31,7 +32,7 @@ return error;
 
 
   
-
+//Customer Signup
 module.exports.customer_signup = async(req,res) => {
 
     const{FullName, email, password, AccountNumber, TotalBalance} = req.body;
@@ -65,6 +66,8 @@ module.exports.customer_signup = async(req,res) => {
     }
 } 
 
+
+//Customer Login
 module.exports.customer_login = async(req,res) => {
     const{password, email} = req.body;
 
@@ -85,16 +88,19 @@ module.exports.customer_login = async(req,res) => {
       }
 }
 
+
+//User profile Details
 module.exports.user_details = async(req, res) => {
 
     try{
-    const customer = await Customer.findById(req.customer._id);
+    const customer = await Customer.findById(req.customer);
      if(customer){
          res.status(200).json({
-            _id : customer._id,
-            FullName: customer.FullName, 
-            AccountNumber: customer.AccountNumber,
-            TotalBalance: customer.TotalBalance,
+             customer
+            // _id : customer._id,
+            // FullName: customer.FullName, 
+            // AccountNumber: customer.AccountNumber,
+            // TotalBalance: customer.TotalBalance,
          });
      }
     }

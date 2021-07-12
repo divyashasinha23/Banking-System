@@ -1,6 +1,7 @@
-import React from "react";
+import React, {Component} from "react";
 import styled from "styled-components";
-import { getUser } from "../Utils/Common";
+import axios from 'axios';
+import { getUser,getToken } from "../Utils/Common";
 
 const Head_Container = styled.div`
 background-color: #ffffff;
@@ -51,10 +52,41 @@ margin-bottom: 10px;
 	
 `
 
-function Profile(props) {
+class Profile extends Component {
+ 
+	state={
+		users:[],
+		loading: true,
+	
+  };
 
-	const customer = getUser();
 
+	getUserDetails = async () => {
+		const token  = getToken();
+        const config = {
+			headers: { Authorization: `Bearer ${token}` }
+		};
+ 
+		 const res =await axios.get('http://localhost:5000/app/User-details',
+		 config
+		 )
+
+		 const users = res.data.customer;
+		 this.setState({ users:users, loading: false});
+      console.log(users);
+
+	}
+
+	componentDidMount() {
+		this.setState({loading: true});
+		this.getUserDetails();
+	}
+	
+
+render()	 {
+	const FullName = this.state.users.FullName;
+	const AccountNumber = this.state.users.AccountNumber;
+	const TotalBalance = this.state.users.TotalBalance;
   return(
   <>
       	<Head_Container>
@@ -64,9 +96,9 @@ function Profile(props) {
 			</Header>
 			<Form_Main>
 				<Form_Control>
-					<h2 className="content">Full Name: {customer.FullName} </h2>
-                    <h2 className="content">Account Number: {customer.AccountNumber}</h2>
-                    <h2 className="content">Total Balance:  {customer.TotalBalance}</h2>
+					<h2 className="content">Full Name: {FullName} </h2>
+                    <h2 className="content">Account Number:{AccountNumber} </h2>
+                    <h2 className="content">Total Balance:{TotalBalance}  </h2>
 				</Form_Control>
 			</Form_Main>
 		</Container>
@@ -74,6 +106,7 @@ function Profile(props) {
   </>
 
   );
+}
     
 }
 
